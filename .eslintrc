@@ -1,3 +1,10 @@
 {
-  "extends": "eslint-config-egg"
+  "extends": "eslint-config-egg",
+  "rules": {
+    "semi": ["error", "never"],  // 禁止使用行尾的分号
+    "indent": ["error", 2],  // 缩进强制为2个空格
+    "comma-dangle": ["error", "always-multiline"],  // 当最后一个元素或属性与闭括号 ] 或 } 在 不同的行时，要求使用拖尾逗号；当在 同一行时，禁止使用拖尾逗号。
+    "comma-spacing": ["error"], // 强制逗号之后要有一个空格
+    "no-var": "error"
+  }
 }

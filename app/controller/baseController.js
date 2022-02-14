@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-const { Controller } = require('egg');
-const Qs = require('qs');
+const { Controller } = require('egg')
+const Qs = require('qs')
 
 class BaseController extends Controller {
   get user() {
-    return this.ctx.state.user;
+    return this.ctx.state.user
   }
   get Qs() {
-    return Qs;
+    return Qs
   }
 
   /**
@@ -19,10 +19,10 @@ class BaseController extends Controller {
    */
   paginationDeal({ query }) {
     // page: 页面；size: 分页数; allData: 查询所有数据，不分页; params: 其他参数
-    const { page = 1, size = 10, allData = 0, ...params } = Qs.parse(query);
-    const offset = (page - 1) * size;
-    const limit = Number(size);
-    return allData ? { ...params } : { limit, offset, ...params };
+    const { page = 1, size = 10, allData = 0, ...params } = Qs.parse(query)
+    const offset = (page - 1) * size
+    const limit = Number(size)
+    return allData ? { ...params } : { limit, offset, ...params }
   }
 
   /**
@@ -38,10 +38,10 @@ class BaseController extends Controller {
       code,
       msg,
       data,
-    };
-    this.ctx.status = status;
+    }
+    this.ctx.status = status
   }
 
 }
 
-module.exports = BaseController;
+module.exports = BaseController

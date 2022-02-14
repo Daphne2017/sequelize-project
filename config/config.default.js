@@ -1,7 +1,7 @@
 /* eslint valid-jsdoc: "off" */
 
-'use strict';
-
+'use strict'
+const path = require('path')
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -10,16 +10,16 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
-  const config = exports = {};
+  const config = exports = {}
   // 模板配置
   config.view = {
     defaultViewEngine: 'nunjucks',
-  };
+  }
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1644812574967_9752';
+  config.keys = appInfo.name + '_1644812574967_9752'
 
   // add your middleware config here
-  config.middleware = [ 'requestLog' ];
+  config.middleware = [ 'requestLog' ]
 
   // add your user config here
   const userConfig = {
@@ -39,6 +39,13 @@ module.exports = appInfo => {
         enable: false,
         ignoreJSON: false,
       },
+      // 允许访问接口的白名单
+      domainWhiteList: [
+        '.mars.com',
+        '.xiaohuxi.cn',
+        '.xinyu100.com',
+        '.huoxingtang.com',
+      ],
     },
     cors: { // 设置跨域
       origin: '*',
@@ -46,14 +53,23 @@ module.exports = appInfo => {
       allowMethods: 'OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH',
     },
     jwt: {
-      secret: 'nJJU8hrfdepHGy8b78',
-      // ignore: [ /^.*().*$/ ],
+      secret: 'nJJU8hrfdepHGy8b78', // 自定义 token 的加密条件字符串
+      ignore: [ /^.*(\/qrcode_login|\/login|\/logout|\/h5\/upload|\/common\/statistics|\/nunjucks|\/restfulApiFruits|\/userAuthTest|\/jwtTest).*$/ ], // 忽略需要验证的路由
       enable: true, // 默认是不启用的。。坑爹啊。。
     },
-  };
+    // 自定义日志
+    customLogger: { // 自定义日志与requestLog中间件关联
+      reqLogger: {
+        file: path.join(appInfo.root, `logs/${appInfo.name}/request.log`),
+        contextFormatter(meta) {
+          return `[${meta.date}] [${meta.ctx.method} ${meta.ctx.url}] ${meta.message}`
+        },
+      },
+    },
+  }
 
   return {
     ...config,
     ...userConfig,
-  };
-};
+  }
+}
