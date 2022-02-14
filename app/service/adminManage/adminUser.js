@@ -2,7 +2,7 @@
 
 const { Service } = require('egg')
 
-class hxAdminUserService extends Service {
+class adminUserService extends Service {
   /**
    * 查找所有符合条件的用户
    * @param {array} attributes 需要查询的字段
@@ -42,4 +42,4 @@ class hxAdminUserService extends Service {
 
 }
 
-module.exports = hxAdminUserService
+module.exports = adminUserService
