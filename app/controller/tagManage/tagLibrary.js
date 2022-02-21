@@ -66,13 +66,12 @@ class tagLibraryController extends baseController {
     ctx.validate({ // 校验参数
       tagName: { require: true, type: 'string' },
     })
-    const { tagName, gameData = [], putStatus, weight = 0 } = ctx.request.body
+    const { tagName, putStatus = 1, weight = 0 } = ctx.request.body
     const transaction = await this.ctx.model.transaction()
-    const body = { tagName, relatedGameCount: gameData.length, putStatus, weight: +weight }
+    const body = { tagName, relatedGameCount: 0, putStatus, weight: +weight }
     try {
       const res = !id ? await service.tagManage.tagLibrary.addTag(body, transaction)
         : await service.tagManage.tagLibrary.updateTag(id, body, transaction) // 更新标签关联游戏数字段值
-      await this.addGames(res.id || id, gameData, transaction) // 添加标签关联的游戏
       await transaction.commit()
       this.success({ data: res })
     } catch (error) {

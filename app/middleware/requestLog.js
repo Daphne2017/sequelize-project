@@ -11,7 +11,6 @@ module.exports = () => {
     const reqLogger = ctx.getLogger('reqLogger')
     const { user } = ctx.state
     try {
-      reqLogger.info(666666666666666)
       reqLogger.info(`ip: ${ctx.request.ip}; ${user ? `userId: ${user.id}; userName: ${user.name};` : ''} query: ${JSON.stringify(ctx.request.query)}; data: ${JSON.stringify(ctx.request.body)};`)
     } catch (e) {
       reqLogger.info('日志打印出错')

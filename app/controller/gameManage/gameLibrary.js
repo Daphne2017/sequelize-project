@@ -3,9 +3,26 @@ const baseController = require('../baseController')
 
 class gameLibraryController extends baseController {
   /**
+   * @return {Promise} 接口返回的Promise对象
+   */
+  async gamesList() {
+    const { ctx } = this
+    const { limit, offset, gameName } = this.paginationDeal(ctx.request.query)
+    const { list, total } = await this.service.gameManage.gameLibrary.getGamesList({ pageObj: { limit, offset }, gameName })
+    return { data: { list, total } }
+  }
+  /**
+     *  获取游戏列表，不进行联表查询，只返回简单字段
+     */
+  async getGamesList() {
+    const res = await this.gamesList(false)
+    this.success(res)
+  }
+  /**
    *  新增游戏
    */
   async addGameSubmit() {
+    console.log('新增游戏')
     await this.updateGame('new')
   }
 
@@ -27,12 +44,12 @@ class gameLibraryController extends baseController {
    */
   async updateGame(type, id = '') {
     const { ctx, service } = this
+    console.log('新增游戏')
     const { ...rest } = this.verifyData(type) // 校验前端传参
-    const transaction = await this.ctx.model.transaction()
     let res = null
     try {
-      res = !id ? await service.gameManage.gameLibrary.addGameSubmit({ ...rest }, transaction)
-        : await service.gameManage.gameLibrary.editGameSubmit(id, { ...rest }, transaction) // 新增 / 编辑
+      res = !id ? await service.gameManage.gameLibrary.addGameSubmit({ ...rest })
+        : await service.gameManage.gameLibrary.editGameSubmit(id, { ...rest }) // 新增 / 编辑
       this.success({ data: res })
     } catch (error) {
       ctx.onerror(error)
@@ -48,23 +65,20 @@ class gameLibraryController extends baseController {
       gameName: { require: true, type: 'string' },
       gameIcon: { require: true, type: 'string' },
       simpleDesc: { require: true, type: 'string' },
-      putStatus: { require: true, type: 'number' },
-      associateTags: { require: true, type: 'array' }, // 游戏关联的标签
+      // putStatus: { require: true, type: 'number' },
     }
     const editObj = {
-      oldAssociateTags: { require: true, type: 'array' },
     }
     this.ctx.validate(type === 'new' ? { ...newObj } : { ...newObj, ...editObj }) // 对参数进行校验
-    const { gameName, gameIcon, simpleDesc, putStatus, associateTags, oldAssociateTags = [] } = this.ctx.request.body
+    const { gameName, gameIcon, simpleDesc, putStatus } = this.ctx.request.body
 
     const newParams = {
       gameName,
       simpleDesc,
       gameIcon,
       putStatus,
-      associateTags,
     }
-    return type === 'new' ? { ...newParams } : { ...newParams, oldAssociateTags }
+    return type === 'new' ? { ...newParams } : { ...newParams }
   }
 
 }
