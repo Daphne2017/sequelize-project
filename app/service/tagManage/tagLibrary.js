@@ -89,6 +89,25 @@ class tagLibraryService extends Service {
       { where: { id } },
     )
   }
+  /**
+   * 获取标签关联的游戏
+   * @param { number } tagId 标签id
+   * @return { Promise } 返回更新的标签
+   */
+  async getRelatedGameByTagId(tagId) {
+    return await this.ctx.model.GameGameTag.findAll({
+      where: { tagId },
+      distinct: true,
+      include: [
+        {
+          model: this.app.model.GameGames,
+          as: 'gameInfo',
+          attributes: [ 'gameName', 'gameIcon' ],
+        },
+      ],
+      order: [[ 'sort', 'ASC' ], [ 'gameId', 'DESC' ]],
+    })
+  }
 }
 
 module.exports = tagLibraryService
