@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 // 游戏排行汇总表
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const { INTEGER, STRING, TINYINT } = Sequelize;
+    const { INTEGER, STRING, TINYINT } = Sequelize
     await queryInterface.createTable('my-test', {
       id: {
         type: INTEGER,
@@ -76,12 +76,12 @@ module.exports = {
           fields: [ 'type', 'start_time', 'end_time', 'game_id', 'is_online' ],
         },
       },
-    });
+    })
     // 添加索引
-    queryInterface.addIndex('my-test', [ 'type' ]);
+    queryInterface.addIndex('my-test', [ 'type' ])
   },
   down: async queryInterface => {
-    await queryInterface.dropTable('my-test');
+    await queryInterface.dropTable('my-test')
   },
-};
+}
 

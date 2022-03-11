@@ -7,17 +7,17 @@
     "dialect": "mysql"
   },
   "beta": {
-    "username": "huoxing",
-    "password": "djsh#d12",
-    "database": "hx_game",
-    "host": "beta-hn1c-mysql0.mysql.rds.aliyuncs.com",
+    "username": "root",
+    "password": "123456",
+    "database": "egg_dev",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "huoxing",
-    "password": "xgraKSgax3CGRLDW",
-    "database": "hx_game",
-    "host": "rm-wz92891e19nhtdb9i.mysql.rds.aliyuncs.com",
+    "username": "root",
+    "password": "123456",
+    "database": "egg_dev",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }
