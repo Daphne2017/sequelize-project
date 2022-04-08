@@ -51,6 +51,7 @@ module.exports = app => {
   })
 
   GameGames.associate = function() {
+    this.hasMany(app.model.GameGameTag, { foreignKey: 'gameId', sourceKey: 'id', as: 'associateTags' }) // 根据gameId拿到关联的associateTags标签信息
   }
 
   return GameGames

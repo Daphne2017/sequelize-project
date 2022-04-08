@@ -109,9 +109,9 @@ class tagLibraryController extends baseController {
   /**
    * 通过tagId获取关联游戏
    */
-  async getRelatedGameByTagId() {
+  async getRelatedGamesByTagId() {
     const tagId = Number(this.ctx.params.tagId)
-    const list = await this.service.tagManage.tagLibrary.getRelatedGameByTagId(tagId)
+    const list = await this.service.tagManage.tagLibrary.getRelatedGamesByTagId(tagId)
     const listData = list.map(node => {
       const itemList = node.toJSON()
       const { gameData, ...rest } = itemList

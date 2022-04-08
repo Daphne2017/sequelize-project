@@ -28,6 +28,7 @@ class AppBootHook {
     // this.app.loader.loadToContext(path.join(__dirname, 'app/tasks'), 'tasks', {
     //   fieldClass: 'tasksClasses',
     // })
+
     const directory = path.join(this.app.config.baseDir, 'utils')
     this.app.loader.loadToApp(directory, 'utils')
   }
@@ -60,17 +61,20 @@ class AppBootHook {
 
 module.exports = AppBootHook
 
-module.exports = app => {
-  app.beforeStart(async () => {
-    // 应用会等待这个函数执行完成才启动
-    // app.cities = await app.curl('http://example.com/city.json', {
-    //   method: 'GET',
-    //   dataType: 'json',
-    // })
+/**
+ * 不建议以下方式引入
+*/
+// module.exports = app => {
+//   app.beforeStart(async () => {
+//     // 应用会等待这个函数执行完成才启动
+//     // app.cities = await app.curl('http://example.com/city.json', {
+//     //   method: 'GET',
+//     //   dataType: 'json',
+//     // })
 
-    // 也可以通过以下方式来调用 Service
-    // const ctx = app.createAnonymousContext();
-    // app.cities = await ctx.service.cities.load();
-  })
+//     // 也可以通过以下方式来调用 Service
+//     // const ctx = app.createAnonymousContext();
+//     // app.cities = await ctx.service.cities.load();
+//   })
 
-}
+// }

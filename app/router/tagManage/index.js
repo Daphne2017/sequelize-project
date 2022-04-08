@@ -19,7 +19,7 @@ module.exports = ({
   router.put('/tagManagement/tagLibraryList/edit/:id', tagLibrary.eidtTag) // 编辑
   router.patch('/tagManagement/tagLibraryList/updatePutStatus/:id', tagLibrary.updatePutStatus) // 标签上下架
   router.patch('/tagManagement/tagLibraryList/updateWeight/:id', tagLibrary.updateWeight) // 标签权重
-  router.get('/tagManagement/tagLibraryList/getRelatedGameByTagId/:tagId', tagLibrary.getRelatedGameByTagId) // 通过tagId获取关联游戏
+  router.get('/tagManagement/tagLibraryList/getRelatedGameByTagId/:tagId', tagLibrary.getRelatedGamesByTagId) // 通过tagId获取关联游戏
 
 
 }

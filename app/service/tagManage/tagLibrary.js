@@ -92,9 +92,10 @@ class tagLibraryService extends Service {
   /**
    * 获取标签关联的游戏
    * @param { number } tagId 标签id
-   * @return { Promise } 返回更新的标签
+   *
    */
-  async getRelatedGameByTagId(tagId) {
+  async getRelatedGamesByTagId(tagId) {
+    console.log(1111111111)
     return await this.ctx.model.GameGameTag.findAll({
       where: { tagId },
       distinct: true,

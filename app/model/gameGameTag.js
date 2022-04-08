@@ -36,7 +36,8 @@ module.exports = app => {
     ],
   })
   GameGameTag.associate = function() {
-    this.belongsTo(app.model.GameGames, { foreignKey: 'gameId', targetKey: 'id', as: 'gameInfo' }) // 根据tagId获取关联游戏的gameInfo信息
+    this.belongsTo(app.model.GameGames, { foreignKey: 'gameId', targetKey: 'id', as: 'gameInfo' }) // 通过查询GameGameTag表，可根据tagId获取标签关联游戏的信息
+    this.belongsTo(app.model.GameTags, { foreignKey: 'tagId', targetKey: 'id', as: 'tagInfo' }) // 通过查询GameGameTag表，可根据gameId获取游戏关联标签的信息
   }
   return GameGameTag
 }

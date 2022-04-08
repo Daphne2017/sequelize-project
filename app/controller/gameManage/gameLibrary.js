@@ -56,6 +56,16 @@ class gameLibraryController extends baseController {
     }
   }
   /**
+   * 通过gameId获取关联标签
+   */
+  async getRelatedTagsBygameId() {
+    const gameId = Number(this.ctx.params.gameId)
+    const list = await this.service.gameManage.gameLibrary.getRelatedTagsBygameId(gameId)
+
+    this.success({ data: list })
+  }
+
+  /**
    * 处理前端发送的游戏参数
    * @param {String} type 校验的类型
    * @return { Object } 游戏数据
