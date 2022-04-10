@@ -59,6 +59,7 @@ class gameLibraryController extends baseController {
    * 通过gameId获取关联标签
    */
   async getRelatedTagsBygameId() {
+    console.log('getRelatedTagsBygameId')
     const gameId = Number(this.ctx.params.gameId)
     const list = await this.service.gameManage.gameLibrary.getRelatedTagsBygameId(gameId)
 

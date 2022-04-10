@@ -19,7 +19,22 @@ class gameLibraryService extends Service {
           [Op.like]: `%${gameName || ''}%`,
         },
       },
-      distinct: true,
+      include: [
+        { // 关联游戏标签表
+          model: this.app.model.GameGameTag,
+          as: 'associateTags',
+          attributes: [[ 'tag_id', 'id' ]],
+          raw: true,
+          include: [
+            {
+              model: this.app.model.GameTags, // 获取标签信息
+              as: 'tagInfo',
+              attributes: [ 'tagName' ],
+            },
+          ],
+        },
+      ],
+      // distinct: true,   // 这一句可以去重，它返回的 count 不会把你的 include 的数量算进去
       order: [[ 'id', 'DESC' ]],
     })
     return { list: rows, total: count }
@@ -30,7 +45,6 @@ class gameLibraryService extends Service {
    * @return {Promise} 返回新增游戏
    */
   async addGameSubmit(body) {
-    console.log(124444, body)
     return await this.ctx.model.GameGames.create(body)
   }
   /**
