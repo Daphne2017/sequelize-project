@@ -35,11 +35,14 @@ class AuthController extends Controller {
   }
 
   /**
-   * 用户登出（已弃用）
+   * 用户登出
    */
   async logout() {
-    this.user = null
-    this.success()
+    this.success({
+      data: {
+        password: this.app.utils.index.sha1('18078867862huoxing2020'),
+      },
+    })
   }
 }
 

@@ -7,6 +7,9 @@ class BaseController extends Controller {
   get user() {
     return this.ctx.state.user
   }
+  set user(newName) {
+    this.user = newName // validation could be checked here such as only allowing non numerical values
+  }
   get Qs() {
     return Qs
   }

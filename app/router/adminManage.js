@@ -7,10 +7,12 @@
 module.exports = ({
   router,
   controller: {
-    auth,
+    adminManage: {
+      adminUser,
+    },
   },
 }) => {
-  // 登录接口
-  router.post('/login', auth.login)
-  router.post('/logout', auth.logout)
+
+  // 获取用户信息
+  router.get('/admin_user/info', adminUser.getUserInfo)
 }

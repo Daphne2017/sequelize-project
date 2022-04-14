@@ -54,8 +54,8 @@ module.exports = appInfo => {
     },
     // "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksIndfaWQiOiJaaG91SHVhbiIsInVzZXJuYW1lIjoiMTg4MTkxNjQyNzQiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ0ODM0MDAzLCJleHAiOjE2NDU0Mzg4MDN9.Ekyziu52XPnuBeUv4WIX9wz1RkOA_diuB7fk5Oext1Y"
     jwt: {
-      secret: 'nJJU8hrfdepHGy8b78', // 自定义 token 的加密条件字符串
-      ignore: [ /^.*(\/qrcode_login|\/login|\/logout|\/h5\/upload|\/common\/statistics|\/nunjucks|\/restfulApiFruits|\/tagManagement|\/gameManagement).*$/ ], // 忽略需要token验证的路由
+      secret: 'nJJU8hrfdepHGy8b78', // 用户鉴权用的，自定义 token 的加密条件字符串
+      ignore: [ /^.*(\/qrcode_login|\/login|\/logout|\/h5\/upload|\/common\/statistics|\/nunjucks|\/restfulApiFruits).*$/ ], // 忽略需要token验证的路由
       enable: true, // 默认是不启用的。。坑爹啊。。
     },
     // 自定义日志

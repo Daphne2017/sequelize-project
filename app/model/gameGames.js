@@ -17,13 +17,6 @@ module.exports = app => {
       defaultValue: '',
       comment: '游戏名称',
     },
-    gameIcon: {
-      type: STRING(255),
-      allowNull: false,
-      comment: '游戏icon图标',
-      field: 'game_icon',
-      defaultValue: '',
-    },
     simpleDesc: {
       type: STRING(255),
       allowNull: false,
