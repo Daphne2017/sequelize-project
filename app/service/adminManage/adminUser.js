@@ -49,7 +49,7 @@ class adminUserService extends Service {
   async validate(username, password) {
     if (!username) throw new Error('缺少用户名')
     if (!password) throw new Error('缺少密码')
-    const userModel = await this.find([ 'id', 'username', 'is_admin' ], {
+    const userModel = await this.find([ 'id', 'username', 'isAdmin' ], {
       username,
       password: this.app.utils.index.sha1(username + password), // 密码加盐，因为注册的时候也加盐了
     }, true)
