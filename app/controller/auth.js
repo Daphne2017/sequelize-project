@@ -31,9 +31,7 @@ class AuthController extends Controller {
     jwtToken = await ctx.service.auth.createJwtToken(tokenInfo)
     // 把token作为key存当前用户信息到redis中
     await this.app.redis.hmset(jwtToken, {
-      id: tokenInfo.id,
-      username: tokenInfo.username,
-      isAdmin: tokenInfo.is_admin,
+      ...tokenInfo,
     })
     this.success({
       data: {
