@@ -1,5 +1,8 @@
-'use strict'
+/**
+ * 官网地址：https://eggjs.github.io/zh/guide/middleware.html
+*/
 
+'use strict'
 module.exports = () => {
   /**
    * 请求日志打印
@@ -17,5 +20,4 @@ module.exports = () => {
     }
     await next()
   }
-
 }
