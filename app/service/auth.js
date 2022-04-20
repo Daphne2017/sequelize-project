@@ -9,14 +9,13 @@ class OauthService extends Service {
    */
   async createJwtToken(tokenInfo) {
     const { app } = this
-
-    return app.jwt.sign(
+    // egg-jwt 插件，在鉴权通过的路由对应 controller 函数中，会将 app.jwt.sign(tokenInfo, secrete)，包括exp和iat 加密的用户信息，添加到 ctx.state.user 中，。
+    const token = app.jwt.sign(
       tokenInfo,
       app.config.jwt.secret,
-      {
-        expiresIn: '7d', // 7天后过期
-      }
+      { expiresIn: app.config.jwt.expiresIn || '7d' }
     )
+    return token
   }
 }
 
