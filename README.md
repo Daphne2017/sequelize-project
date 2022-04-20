@@ -31,8 +31,8 @@ node版本为：17.7.1
 - 为避免冲突，本地数据库配置，统一为
 ```json
 "username": "root",
-"password": "root",
-"database": "marsgame_dev",
+"password": "123456",
+"database": "egg_dev",
 "host": "127.0.0.1",
 "dialect": "mysql",
 ```
