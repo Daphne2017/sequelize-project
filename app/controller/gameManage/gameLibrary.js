@@ -11,12 +11,14 @@ class gameLibraryController extends baseController {
     }
   }
   /**
+   * @param { Boolean } isExport 是否导出
    * @return {Promise} 接口返回的Promise对象
    */
   async gamesList(isExport) {
+
     const { ctx } = this
     const { limit, offset, order = {}, gameName, putStatus } = this.paginationDeal(ctx.request.query)
-    const pageObj = !isExport ? { limit, offset } : {} // 是否分页查询
+    const pageObj = { limit, offset }
     const filterObj = this.app.utils.index.filterObjProp({ putStatus }) // 其他过滤条件
     const { col, sort } = this.app.utils.index.returnObject(order)
     const orderArr = [[ col || 'id', sort || 'DESC' ]] // 排序条件查询
@@ -25,6 +27,23 @@ class gameLibraryController extends baseController {
     let { list, total } = await this.service.gameManage.gameLibrary.getGamesList({ pageObj, gameName, filterObj, orderArr })
     list = await this.gameDataFlat(list) // 是否对返回的数据进行处理
     return { data: { list, total } }
+  }
+  /**
+   * 获取所有游戏
+   */
+  async getAllGames() {
+    const { service } = this
+    // let allGames = await this.ctx.service.redis.get('allGames')
+    // if (allGames) { console.log('存在redis缓存') }
+    // if (!allGames) {
+    //   console.log('没有redis缓存')
+    //   allGames = await service.gameManage.gameLibrary.getAllGames()
+    //   await this.ctx.service.redis.set('allGames', allGames, 60 * 60)
+    // }
+
+    console.log('没有redis缓存')
+    const allGames = await service.gameManage.gameLibrary.getAllGames()
+    this.success({ data: allGames })
   }
   /**
    * 关联表嵌套数据平级处理
@@ -58,8 +77,8 @@ class gameLibraryController extends baseController {
     this.success({ data })
   }
   /**
-     *  获取游戏列表，不进行联表查询，只返回简单字段
-     */
+   *  获取游戏列表
+   */
   async getGamesList() {
     const res = await this.gamesList(false)
     this.success(res)
@@ -68,10 +87,8 @@ class gameLibraryController extends baseController {
    *  新增游戏
    */
   async addGameSubmit() {
-    console.log('新增游戏')
     await this.updateGame('new')
   }
-
   /**
    * 编辑游戏
    */
@@ -100,7 +117,7 @@ class gameLibraryController extends baseController {
       await Promise.all([
         this.updateAssociateTags(res.id || id, associateTags, transaction), // 更新游戏关联的标签
       ])
-      await this.updateRelatedGameCount({ associateTags, oldAssociateTags }, transaction) // 新编辑游戏时涉及到所有标签在标签表中的related_game_count字段
+      await this.updateTagRelatedGameCount({ associateTags, oldAssociateTags }, transaction) // 更新标签关联的游戏数数量
       await transaction.commit()
       this.success({ data: res })
     } catch (error) {
@@ -136,10 +153,10 @@ class gameLibraryController extends baseController {
    * @param { Array } obj.oldAssociateTags 游戏旧关联的标签数据
    * @param { object } transaction 事务对象
    */
-  async updateRelatedGameCount({ associateTags = [], oldAssociateTags = [] }, transaction) {
+  async updateTagRelatedGameCount({ associateTags = [], oldAssociateTags = [] }, transaction) {
     const unqueIdArr = [ ...new Set([ ...associateTags, ...oldAssociateTags ].map(item => item.id)) ] // 去除重复的tagid
-    const relatedGamecountObj = await this.service.gameManage.gameLibrary.relatedGameCount(unqueIdArr, transaction) // 分别统计新增/编辑时涉及到的标签所关联游戏数count
-    await this.service.gameManage.gameLibrary.updateRelatedGameCount(relatedGamecountObj, transaction) // 更新标签库表中部分标签的related_game_count字段
+    const tagRelatedGamecountObj = await this.service.gameManage.gameLibrary.tagRelatedGameCount(unqueIdArr, transaction) // 分别统计新增/编辑时涉及到的标签所关联游戏数count
+    await this.service.gameManage.gameLibrary.updateTagRelatedGameCount(tagRelatedGamecountObj, transaction) // 更新标签库表中部分标签的related_game_count字段
   }
   /**
    * 处理前端发送的游戏参数

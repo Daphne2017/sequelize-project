@@ -52,6 +52,15 @@ class gameLibraryService extends Service {
     return { list: rows, total: count }
   }
   /**
+   * 模糊查询游戏名字，获取所有游戏
+   * @return { Promise<Array> } 返回查询的游戏数据
+   */
+  async getAllGames() {
+    return await this.ctx.model.GameGames.findAll({
+      attribute: [ 'id', 'gameName' ],
+    })
+  }
+  /**
    * 游戏上下架
    * @param { Object } obj 参数对象
    * @param { number } obj.id 游戏id
@@ -138,16 +147,16 @@ class gameLibraryService extends Service {
   }
   /**
    * 统计标签关联的游戏数
-   * @param { Array } tagIdDatas 标签id集合
+   * @param { Array } tagIds 标签id集合
    * @param { object } transaction 事务对象
    * @return { Object } 返回当前标签对应关联游戏数的键值对
    */
-  async relatedGameCount(tagIdDatas, transaction) {
+  async tagRelatedGameCount(tagIds, transaction) {
     let sql = ''
-    tagIdDatas.forEach(async id => {
+    tagIds.forEach(async id => {
       sql += `sum(case when tag_id = ${id} then 1 else 0 end) '${id}',`
     })
-    sql = sql.substring(0, sql.lastIndexOf(','))
+    sql = sql.substring(0, sql.lastIndexOf(',')) // 一定要去掉sql语句最后一个逗号，否则会报错
     const resArr = await this.app.model.query(
       `select ${sql} from game_game_tag;`,
       { type: 'SELECT', transaction })
@@ -158,7 +167,7 @@ class gameLibraryService extends Service {
    * @param { Number } relatedGamecountObj 标签关联游戏数对象
    * @param { object } transaction 事务对象
    */
-  async updateRelatedGameCount(relatedGamecountObj, transaction) {
+  async updateTagRelatedGameCount(relatedGamecountObj, transaction) {
     const tagData = []
     for (const key in relatedGamecountObj) {
       if (relatedGamecountObj.hasOwnProperty(key)) {
@@ -169,7 +178,7 @@ class gameLibraryService extends Service {
         tagData.push(tagItem)
       }
     }
-    await this.ctx.model.GameTags.bulkCreate(tagData, { updateOnDuplicate: [ 'relatedGameCount' ], transaction })
+    await this.ctx.model.GameTags.bulkCreate(tagData, { updateOnDuplicate: [ 'relatedGameCount' ], transaction }) // bulkCreate有就更新，没有就插入
   }
 }
 
