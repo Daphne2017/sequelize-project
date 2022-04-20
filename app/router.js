@@ -16,4 +16,5 @@ module.exports = app => {
   require('./router/tagManage/index')(app)
   // 游戏管理
   require('./router/gameManage/index')(app)
+  require('./router/roleManage/index')(app)
 }
