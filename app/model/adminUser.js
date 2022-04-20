@@ -11,11 +11,6 @@ module.exports = app => {
       primaryKey: true,
       autoIncrement: true,
     },
-    w_id: {
-      type: STRING,
-      allowNull: false,
-      comment: '企业微信ID',
-    },
     username: {
       type: STRING(30),
       comment: '用户登录名',
@@ -28,26 +23,15 @@ module.exports = app => {
       },
       comment: '用户登录密码',
     },
-    name: {
-      type: STRING,
-      comment: '姓名。从企业微信读取并保存。',
-    },
-    mobile: {
-      type: STRING,
-      comment: '手机号。从企业微信读取并保存',
-    },
-    gender: {
-      type: STRING,
-      comment: '性别。0表示未定义，1表示男性，2表示女性。从企业微信读取并保存。',
-    },
-    email: {
-      type: STRING,
-      comment: '邮箱。从企业微信读取并保存。',
-    },
-    is_admin: {
-      type: BOOLEAN,
+    role: {
+      type: STRING(50),
+      defaultValue: 'test',
       allowNull: false,
-      defaultValue: false,
+    },
+    isAdmin: {
+      type: INTEGER,
+      allowNull: false,
+      defaultValue: 0,
       comment: '是否为管理员',
     },
     status: {
@@ -56,17 +40,19 @@ module.exports = app => {
       defaultValue: true,
       comment: '账号状态。禁用：0，正常：1',
     },
-    created_at: {
+    createdAt: {
       type: DATE,
       comment: '数据创建时间',
     },
-    updated_at: {
+    updatedAt: {
       type: DATE,
       comment: '数据更新时间',
     },
   }, {
     alter: true,
   })
-
+  AdminUser.associate = function() {
+    this.hasMany(app.model.UserRole, { foreignKey: 'code', sourceKey: 'role', as: 'roles' })
+  }
   return AdminUser
 }
