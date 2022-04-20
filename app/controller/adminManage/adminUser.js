@@ -12,7 +12,7 @@ class adminUserController extends Controller {
     const userInfo = await this.ctx.service.adminManage.adminUser.find(null, { id: userId }, true)
     const data = {
       id: userId,
-      name: this.user.name,
+      name: this.user.username,
       avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
       roles: userInfo.role.split(','),
       introduction: 'I am a super administrator',
